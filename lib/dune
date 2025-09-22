@@ -1,0 +1,4 @@
+(library
+ (name gl_legacy)
+ (public_name gl-legacy)
+ (libraries ctypes.foreign))
