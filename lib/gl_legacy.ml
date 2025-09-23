@@ -13,6 +13,8 @@ open Ctypes
 open Foreign
 open Bigarray
 
+let uu_of_int = Unsigned.UInt.of_int
+
 (* ---------------------------------------------------------------------- *)
 (* Dynamically open the OpenGL shared library *)
 
@@ -149,28 +151,66 @@ let clear_color =
 let clear = foreign1 "glClear" C.uint
 
 (* Clear buffer bits *)
-let color_buffer_bit   = Unsigned.UInt.of_int 0x00004000
-let depth_buffer_bit   = Unsigned.UInt.of_int 0x00000100
-let stencil_buffer_bit = Unsigned.UInt.of_int 0x00000400
+let color_buffer_bit   = uu_of_int 0x00004000
+let depth_buffer_bit   = uu_of_int 0x00000100
+let stencil_buffer_bit = uu_of_int 0x00000400
+
+
+(* Feedback-related functions *)
+
+(* GLint glRenderMode(GLenum mode) *)
+let gl_render_mode =
+  foreign "glRenderMode" (C.uint @-> returning C.int)
+
+(* void glFeedbackBuffer(GLsizei size, GLenum type, GLfloat *buffer) *)
+let gl_feedback_buffer =
+  foreign "glFeedbackBuffer" (C.int @-> C.uint @-> ptr C.float @-> returning C.void)
+
+(* void glPassThrough(GLfloat token) *)
+let gl_pass_through =
+  foreign1 "glPassThrough" C.float
 
 
 (* ---------------------------------------------------------------------- *)
 (* Common constants *)
 
-let modelview  = Unsigned.UInt.of_int 0x1700  (* GL_MODELVIEW *)
-let projection = Unsigned.UInt.of_int 0x1701  (* GL_PROJECTION *)
-let texture    = Unsigned.UInt.of_int 0x1702  (* GL_TEXTURE *)
+let modelview  = uu_of_int 0x1700  (* GL_MODELVIEW *)
+let projection = uu_of_int 0x1701  (* GL_PROJECTION *)
+let texture    = uu_of_int 0x1702  (* GL_TEXTURE *)
 
-let points         = Unsigned.UInt.of_int 0x0000
-let lines          = Unsigned.UInt.of_int 0x0001
-let line_loop      = Unsigned.UInt.of_int 0x0002
-let line_strip     = Unsigned.UInt.of_int 0x0003
-let triangles      = Unsigned.UInt.of_int 0x0004
-let triangle_strip = Unsigned.UInt.of_int 0x0005
-let triangle_fan   = Unsigned.UInt.of_int 0x0006
-let quads          = Unsigned.UInt.of_int 0x0007
-let quad_strip     = Unsigned.UInt.of_int 0x0008
-let polygon        = Unsigned.UInt.of_int 0x0009
+let points         = uu_of_int 0x0000
+let lines          = uu_of_int 0x0001
+let line_loop      = uu_of_int 0x0002
+let line_strip     = uu_of_int 0x0003
+let triangles      = uu_of_int 0x0004
+let triangle_strip = uu_of_int 0x0005
+let triangle_fan   = uu_of_int 0x0006
+let quads          = uu_of_int 0x0007
+let quad_strip     = uu_of_int 0x0008
+let polygon        = uu_of_int 0x0009
+
+(* Constants for glRenderMode *)
+let render   = uu_of_int 0x1C00
+let select   = uu_of_int 0x1C02
+let feedback = uu_of_int 0x1C01
+
+(* Constants for feedback buffer types *)
+let gl_2d        = uu_of_int 0x0600
+let gl_3d        = uu_of_int 0x0601
+let gl_3d_color  = uu_of_int 0x0602
+let gl_3d_color_texture = uu_of_int 0x0603
+let gl_4d_color_texture = uu_of_int 0x0604
+
+(* Feedback buffer tokens *)
+let pass_through_token   = uu_of_int 0x0700
+let point_token          = uu_of_int 0x0701
+let line_token           = uu_of_int 0x0702
+let line_reset_token     = uu_of_int 0x0707
+let polygon_token        = uu_of_int 0x0703
+let bitmap_token         = uu_of_int 0x0704
+let draw_pixel_token     = uu_of_int 0x0705
+let copy_pixel_token     = uu_of_int 0x0706
+
 
 (*
    emacs: convert camel-case to snake_case:

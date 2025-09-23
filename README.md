@@ -6,10 +6,27 @@ Use this together with `tgls` for a complete coverage of (more) modern OpenGL.
 
 __Work in Progress__
 
+# Examples
+
 Right now the triangle demo works ;)
+
+To run the demo:
+
+* Make sure `tsdl` is installed, or run
+```bash
+opam install tsdl
+```
+
+* Then
+
+```bash
+mv bin/dune.moveme bin/dune
+dune exec bin/example.exe
+```
 
 ![triangle](triangle.png)
 
+# Code sample
 
 ```ocaml
 (...)
