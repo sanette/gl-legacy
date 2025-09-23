@@ -15,4 +15,5 @@
  (depends
   (ocaml (>= 4.14))
   ctypes
-  ctypes-foreign))
+  ctypes-foreign
+  tsdl))

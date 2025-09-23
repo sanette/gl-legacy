@@ -15,11 +15,9 @@ depends: [
   "ocaml" {>= "4.14"}
   "ctypes"
   "ctypes-foreign"
+  "tsdl"
   "odoc" {with-doc}
 ]
-depopts: [
-  "tsdl"  # only needed for tests
-] 
 build: [
   ["dune" "subst"] {dev}
   [
