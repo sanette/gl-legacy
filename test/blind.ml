@@ -28,7 +28,6 @@ let () =
     (* Gl.vertex2f 0.8 (-0.8); *)
     (* Gl.gl_end (); *)
 
-    Gl.flush ();
     print_endline "Tests OK"
   end
   else print_endline "Tests skipped"
