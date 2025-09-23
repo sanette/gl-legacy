@@ -2,7 +2,7 @@
 
 Legacy OpenGL immediate-mode bindings for OCaml
 
-Use this together with [tgls] for a complete coverage of (more) modern OpenGL.
+Use this together with `tgls` for a complete coverage of (more) modern OpenGL.
 
 __Work in Progress__
 

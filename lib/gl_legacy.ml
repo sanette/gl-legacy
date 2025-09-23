@@ -19,34 +19,39 @@ open Bigarray
 let lib_gl =
   if Sys.os_type = "Win32" then
     Dl.dlopen ~flags:[Dl.RTLD_NOW; Dl.RTLD_GLOBAL] ~filename:"opengl32.dll"
+    |> Option.some
   else if Sys.os_type = "Unix" then
     (* Linux / BSD usually have libGL.so.1 *)
-    Dl.dlopen ~flags:[Dl.RTLD_NOW; Dl.RTLD_GLOBAL] ~filename:"libGL.so.1"
-  else
-    (* macOS *)
-    Dl.dlopen ~flags:[Dl.RTLD_NOW; Dl.RTLD_GLOBAL]
-      ~filename:"/System/Library/Frameworks/OpenGL.framework/OpenGL"
+    try
+      Dl.dlopen ~flags:[Dl.RTLD_NOW; Dl.RTLD_GLOBAL] ~filename:"libGL.so.1"
+    |> Option.some
+    with (* maybe macOS *)
+      _ ->
+      Dl.dlopen ~flags:[Dl.RTLD_NOW; Dl.RTLD_GLOBAL]
+        ~filename:"/System/Library/Frameworks/OpenGL.framework/OpenGL"
+      |> Option.some
+  else None
 
 (* ---------------------------------------------------------------------- *)
 (* Helpers to reduce boilerplate *)
 
 let foreign0 name =
-  foreign ~from:lib_gl name (void @-> returning void)
+  foreign ?from:lib_gl name (void @-> returning void)
 
 let foreign1 name t1 =
-  foreign ~from:lib_gl name (t1 @-> returning void)
+  foreign ?from:lib_gl name (t1 @-> returning void)
 
 let foreign2 name t1 t2 =
-  foreign ~from:lib_gl name (t1 @-> t2 @-> returning void)
+  foreign ?from:lib_gl name (t1 @-> t2 @-> returning void)
 
 let foreign3 name t1 t2 t3 =
-  foreign ~from:lib_gl name (t1 @-> t2 @-> t3 @-> returning void)
+  foreign ?from:lib_gl name (t1 @-> t2 @-> t3 @-> returning void)
 
 let foreign4 name t1 t2 t3 t4 =
-  foreign ~from:lib_gl name (t1 @-> t2 @-> t3 @-> t4 @-> returning void)
+  foreign ?from:lib_gl name (t1 @-> t2 @-> t3 @-> t4 @-> returning void)
 
 let foreign6 name t1 t2 t3 t4 t5 t6 =
-  foreign ~from:lib_gl name
+  foreign ?from:lib_gl name
     (t1 @-> t2 @-> t3 @-> t4 @-> t5 @-> t6 @-> returning void)
 
 (* ---------------------------------------------------------------------- *)
