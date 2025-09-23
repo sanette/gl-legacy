@@ -17,6 +17,9 @@ depends: [
   "ctypes-foreign"
   "odoc" {with-doc}
 ]
+depopts: [
+  "tsdl"  # only needed for tests
+] 
 build: [
   ["dune" "subst"] {dev}
   [
