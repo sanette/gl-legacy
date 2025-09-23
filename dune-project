@@ -1,6 +1,6 @@
 (lang dune 3.12)
 (name gl-legacy)
-(version "0.0.1")
+(version "0.0.2")
 (generate_opam_files true)
 (license ISC)
 (maintainers "Vu Ngoc San <san.vu-ngoc@laposte.net>")
