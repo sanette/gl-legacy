@@ -15,6 +15,4 @@
  (depends
   (ocaml (>= 4.14))
   ctypes
-  ctypes-foreign
-  (mesa-common-dev (= :os-family "debian"))
-))
+  ctypes-foreign))
