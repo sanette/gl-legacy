@@ -3,6 +3,7 @@
 module Gl = Gl_legacy
 
 let () =
+  if Gl.lib_gl <> None then begin
 (* Clear screen to black *)
     Gl.clear_color 0.0 0.0 0.0 1.0;
     Gl.clear Gl.color_buffer_bit;
@@ -26,3 +27,7 @@ let () =
     Gl.color3f 0.0 0.0 1.0;
     Gl.vertex2f 0.8 (-0.8);
     Gl.gl_end ();
+
+    print_endline "Tests OK"
+  end
+  else print_endline "Tests skipped"
