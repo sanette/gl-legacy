@@ -15,7 +15,7 @@ depends: [
   "ocaml" {>= "4.14"}
   "ctypes"
   "ctypes-foreign" {>= "0.21.1"}
-  "conf-libgl" {os != "macos"}
+  "conf-libgl" {os != "macos" & os != "windows"}
   "odoc" {with-doc}
 ]
 build: [
