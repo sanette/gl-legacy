@@ -16,4 +16,5 @@
   (ocaml (>= 4.14))
   ctypes
   ctypes-foreign
-  conf-libgl))
+  (conf-libgl (<> :os "macos")) ;; currently conf-libgl requires "pkg-config --exists gl" which fails on macOS even though they usually have openGL framework installed.
+))
