@@ -30,8 +30,10 @@ let lib_gl =
       Dl.dlopen ~flags:[Dl.RTLD_NOW; Dl.RTLD_GLOBAL]
         ~filename:"/System/Library/Frameworks/OpenGL.framework/OpenGL"
       |> Option.some
-  else None
-
+  else begin
+    print_endline "Could not find OpenGL library file.";
+    None
+  end
 (* ---------------------------------------------------------------------- *)
 (* Helpers to reduce boilerplate *)
 
