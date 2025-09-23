@@ -1,0 +1,3 @@
+(test
+ (name blind)
+ (libraries gl_legacy))
