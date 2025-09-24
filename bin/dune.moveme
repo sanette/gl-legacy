@@ -1,3 +1,10 @@
 (executable
- (name example)
+ (name triangle)
+ (modules triangle)
+ (libraries tsdl gl_legacy))
+
+
+(executable
+ (name cube)
+ (modules cube)
  (libraries tsdl gl_legacy))

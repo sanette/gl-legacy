@@ -6,7 +6,7 @@ Use this together with `tgls` for a complete coverage of (more) modern OpenGL.
 
 __Work in Progress__
 
-# Examples
+## Examples
 
 Right now the triangle ad cube demos work ;)
 
@@ -28,7 +28,9 @@ dune exec bin/cube.exe
 
 ![triangle](triangle.png)
 
-# Code sample
+![cube](cube.png)
+
+## Code sample
 
 ```ocaml
 (...)
