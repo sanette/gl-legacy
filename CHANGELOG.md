@@ -1,9 +1,14 @@
-# 0.0.3
+# 0.03
+
+## Added
+
+* cube demo
+
+# 0.0.2
 
 ## Added
 
 * feedback
-* cube demo
 
 # initial version 0.0.1
 
