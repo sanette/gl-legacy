@@ -2,7 +2,7 @@
 
 ## Added
 
-* cube demo
+* cube demos
 
 # 0.0.2
 

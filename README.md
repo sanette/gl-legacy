@@ -23,7 +23,7 @@ opam install tsdl
 mv bin/dune.moveme bin/dune
 dune exec bin/triangle.exe
 dune exec bin/cube.exe
-
+dune exec bin/cube_lit.exe
 ```
 
 ![triangle](triangle.png)

@@ -160,6 +160,19 @@ let stencil_buffer_bit = uu_of_int 0x00000400
 
 let depth_test  = uu_of_int 0x0B71
 
+let lightfv = foreign3 "glLightfv" enum enum (ptr C.float)
+
+let materialfv = foreign3 "glMaterialfv" enum enum (ptr C.float)
+
+(* enums *)
+let lighting      = uu_of_int 0x0B50
+let light0        = uu_of_int 0x4000
+let diffuse       = uu_of_int 0x1201
+let specular      = uu_of_int 0x1202
+let position      = uu_of_int 0x1203
+let front         = uu_of_int 0x0404
+
+let color_material = uu_of_int 0x0B57
 
 (* ---------------------------------------------------------------------- *)
 (* Common constants *)

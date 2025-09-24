@@ -8,3 +8,8 @@
  (name cube)
  (modules cube)
  (libraries tsdl gl_legacy))
+
+(executable
+ (name cube_lit)
+ (modules cube_lit)
+ (libraries tsdl gl_legacy))
