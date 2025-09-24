@@ -8,7 +8,7 @@ __Work in Progress__
 
 # Examples
 
-Right now the triangle demo works ;)
+Right now the triangle ad cube demos work ;)
 
 To run the demo:
 
@@ -21,7 +21,9 @@ opam install tsdl
 
 ```bash
 mv bin/dune.moveme bin/dune
-dune exec bin/example.exe
+dune exec bin/triangle.exe
+dune exec bin/cube.exe
+
 ```
 
 ![triangle](triangle.png)

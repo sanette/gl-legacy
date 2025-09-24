@@ -1,4 +1,5 @@
 open Tsdl
+module Gl = Gl_legacy
 
 let () =
   (* Initialize SDL with video *)
@@ -35,35 +36,34 @@ let () =
       if Sdl.poll_event (Some event) then begin
         match Sdl.Event.(get event typ) with
         | t when t = Sdl.Event.quit -> running := false
-        | _ -> ();
-        pump ()
+        | _ -> pump ()
       end
     in
     pump ();
 
     (* Clear screen to black *)
-    Gl_legacy.clear_color 0.0 0.0 0.0 1.0;
-    Gl_legacy.clear Gl_legacy.color_buffer_bit;
+    Gl.clear_color 0.0 0.0 0.0 1.0;
+    Gl.clear Gl.color_buffer_bit;
 
     (* Projection *)
-    Gl_legacy.matrix_mode Gl_legacy.projection;
-    Gl_legacy.load_identity ();
-    Gl_legacy.ortho (-1.0) 1.0 (-1.0) 1.0 (-1.0) 1.0;
+    Gl.matrix_mode Gl.projection;
+    Gl.load_identity ();
+    Gl.ortho (-1.0) 1.0 (-1.0) 1.0 (-1.0) 1.0;
 
     (* Modelview *)
-    Gl_legacy.matrix_mode Gl_legacy.modelview;
-    Gl_legacy.load_identity ();
-    Gl_legacy.rotatef !angle 0.0 0.0 1.0;
+    Gl.matrix_mode Gl.modelview;
+    Gl.load_identity ();
+    Gl.rotatef !angle 0.0 0.0 1.0;
 
     (* Triangle *)
-    Gl_legacy.gl_begin Gl_legacy.triangles;
-    Gl_legacy.color3f 1.0 0.0 0.0;
-    Gl_legacy.vertex2f 0.0 0.8;
-    Gl_legacy.color3f 0.0 1.0 0.0;
-    Gl_legacy.vertex2f (-0.8) (-0.8);
-    Gl_legacy.color3f 0.0 0.0 1.0;
-    Gl_legacy.vertex2f 0.8 (-0.8);
-    Gl_legacy.gl_end ();
+    Gl.gl_begin Gl.triangles;
+    Gl.color3f 1.0 0.0 0.0;
+    Gl.vertex2f 0.0 0.8;
+    Gl.color3f 0.0 1.0 0.0;
+    Gl.vertex2f (-0.8) (-0.8);
+    Gl.color3f 0.0 0.0 1.0;
+    Gl.vertex2f 0.8 (-0.8);
+    Gl.gl_end ();
 
     Sdl.gl_swap_window win;
 

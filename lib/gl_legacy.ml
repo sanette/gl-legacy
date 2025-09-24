@@ -61,8 +61,11 @@ let foreign6 name t1 t2 t3 t4 t5 t6 =
 (* ---------------------------------------------------------------------- *)
 (* Immediate mode core *)
 
-let gl_begin = foreign1 "glBegin" C.uint
+let enum = C.uint
+
+let gl_begin = foreign1 "glBegin" enum
 let gl_end = foreign0 "glEnd"
+let enable = foreign1 "glEnable" enum
 
 (* vertices *)
 let vertex2f = foreign2 "glVertex2f" C.float C.float
@@ -82,7 +85,7 @@ let normal3f = foreign3 "glNormal3f" C.float C.float C.float
 (* ---------------------------------------------------------------------- *)
 (* Matrix stack & transforms *)
 
-let matrix_mode   = foreign1 "glMatrixMode" C.uint
+let matrix_mode   = foreign1 "glMatrixMode" enum
 let load_identity = foreign0 "glLoadIdentity"
 let push_matrix   = foreign0 "glPushMatrix"
 let pop_matrix    = foreign0 "glPopMatrix"
@@ -148,27 +151,14 @@ let mult_matrixd (m : (float, float64_elt, c_layout) Array1.t) : unit =
 let clear_color =
   foreign4 "glClearColor" C.float C.float C.float C.float
 
-let clear = foreign1 "glClear" C.uint
+let clear = foreign1 "glClear" enum
 
 (* Clear buffer bits *)
 let color_buffer_bit   = uu_of_int 0x00004000
 let depth_buffer_bit   = uu_of_int 0x00000100
 let stencil_buffer_bit = uu_of_int 0x00000400
 
-
-(* Feedback-related functions *)
-
-(* GLint glRenderMode(GLenum mode) *)
-let gl_render_mode =
-  foreign "glRenderMode" (C.uint @-> returning C.int)
-
-(* void glFeedbackBuffer(GLsizei size, GLenum type, GLfloat *buffer) *)
-let gl_feedback_buffer =
-  foreign "glFeedbackBuffer" (C.int @-> C.uint @-> ptr C.float @-> returning C.void)
-
-(* void glPassThrough(GLfloat token) *)
-let gl_pass_through =
-  foreign1 "glPassThrough" C.float
+let depth_test  = uu_of_int 0x0B71
 
 
 (* ---------------------------------------------------------------------- *)
@@ -194,23 +184,142 @@ let render   = uu_of_int 0x1C00
 let select   = uu_of_int 0x1C02
 let feedback = uu_of_int 0x1C01
 
-(* Constants for feedback buffer types *)
-let gl_2d        = uu_of_int 0x0600
-let gl_3d        = uu_of_int 0x0601
-let gl_3d_color  = uu_of_int 0x0602
-let gl_3d_color_texture = uu_of_int 0x0603
-let gl_4d_color_texture = uu_of_int 0x0604
+type render_mode =
+  | RENDER
+  | SELECT
+  | FEEDBACK
 
-(* Feedback buffer tokens *)
-let pass_through_token   = uu_of_int 0x0700
-let point_token          = uu_of_int 0x0701
-let line_token           = uu_of_int 0x0702
-let line_reset_token     = uu_of_int 0x0707
-let polygon_token        = uu_of_int 0x0703
-let bitmap_token         = uu_of_int 0x0704
-let draw_pixel_token     = uu_of_int 0x0705
-let copy_pixel_token     = uu_of_int 0x0706
+let render_mode_enum = function
+  | RENDER -> render
+  | SELECT -> select
+  | FEEDBACK -> feedback
 
+module Feedback = struct
+  (* Constants for feedback buffer types *)
+  let gl_2d        = uu_of_int 0x0600
+  let gl_3d        = uu_of_int 0x0601
+  let gl_3d_color  = uu_of_int 0x0602
+  let gl_3d_color_texture = uu_of_int 0x0603
+  let gl_4d_color_texture = uu_of_int 0x0604
+
+  type buffer =
+    | GL_2D
+    | GL_3D
+    | GL_3D_COLOR
+    | GL_3D_COLOR_TEXTURE
+    | GL_4D_COLOR_TEXTURE
+
+  (* Query replace regex
+     | \([A-Z0-9_]*\)
+   → | \1 -> \,(downcase \1)
+
+     ou bien
+     \([A-Z0-9_]*\) → -> \,(downcase \1))
+
+  *)
+  let buffer_type_enum = function
+    | GL_2D -> gl_2d
+    | GL_3D -> gl_3d
+    | GL_3D_COLOR -> gl_3d_color
+    | GL_3D_COLOR_TEXTURE -> gl_3d_color_texture
+    | GL_4D_COLOR_TEXTURE -> gl_4d_color_texture
+
+
+  (* Feedback buffer tokens *)
+  let pass_through_token   = uu_of_int 0x0700
+  let point_token          = uu_of_int 0x0701
+  let line_token           = uu_of_int 0x0702
+  let line_reset_token     = uu_of_int 0x0707
+  let polygon_token        = uu_of_int 0x0703
+  let bitmap_token         = uu_of_int 0x0704
+  let draw_pixel_token     = uu_of_int 0x0705
+  let copy_pixel_token     = uu_of_int 0x0706
+
+  (* on copie le bloc "let..." ci-dessus puis:
+     Query replace regexp:
+     let \([a-z_]*\)_token *=.*
+   → | \,(upcase \1)
+
+  *)
+  type token =
+    | PASS_THROUGH
+    | POINT
+    | LINE
+    | LINE_RESET
+    | POLYGON
+    | BITMAP
+    | DRAW_PIXEL
+    | COPY_PIXEL
+
+(*
+Query replace regexp :
+ | \([A-Z0-9_]*\)
+ | \1 -> \,(downcase \1)_token
+
+*)
+  let token_enum = function
+    | PASS_THROUGH -> pass_through_token
+    | POINT -> point_token
+    | LINE -> line_token
+    | LINE_RESET -> line_reset_token
+    | POLYGON -> polygon_token
+    | BITMAP -> bitmap_token
+    | DRAW_PIXEL -> draw_pixel_token
+    | COPY_PIXEL -> copy_pixel_token
+
+(*
+Query replace regexpm
+  | \([A-Z0-9_]*\)
+ | i when i = \,(downcase \1)_token -> \1
+
+*)
+  let token = function
+    | i when i = pass_through_token -> PASS_THROUGH
+    | i when i = point_token -> POINT
+    | i when i = line_token -> LINE
+    | i when i = line_reset_token -> LINE_RESET
+    | i when i = polygon_token -> POLYGON
+    | i when i = bitmap_token -> BITMAP
+    | i when i = draw_pixel_token -> DRAW_PIXEL
+    | i when i = copy_pixel_token -> COPY_PIXEL
+    | _ -> raise (invalid_arg "feedback_token")
+
+
+  (* Feedback-related functions
+    https://registry.khronos.org/OpenGL-Refpages/gl2.1/xhtml/glRenderMode.xml
+  *)
+
+  (* GLint glRenderMode(GLenum mode) *)
+  let render_mode =
+    foreign "glRenderMode" (enum @-> returning C.int)
+
+  let render_mode mode =
+    render_mode (render_mode_enum mode)
+
+  (* void glFeedbackBuffer(GLsizei size, GLenum type, GLfloat *buffer) *)
+  let feedback_buffer =
+    foreign "glFeedbackBuffer" (C.int @-> enum @-> ptr C.float @-> returning C.void)
+
+  (* void glPassThrough(GLfloat token) *)
+  let pass_through =
+    foreign1 "glPassThrough" C.float
+
+  (* Create a feedback buffer of size `n` floats *)
+  let make_feedback_buffer n : (float, float32_elt, c_layout) Array1.t =
+    Array1.create float32 c_layout n
+
+  let feedback_buffer_ptr (ba : (float, float32_elt, c_layout) Array1.t) =
+    C.bigarray_start C.array1 ba
+
+  (* Return a feedback buffer. To be used *before* render_mode is called*)
+  let setup n mode =
+    let mode = buffer_type_enum mode in
+    let ba = make_feedback_buffer n in
+    let ptr = feedback_buffer_ptr ba in
+    feedback_buffer n mode ptr;
+    ba
+
+end
 
 (*
    emacs: convert camel-case to snake_case:
