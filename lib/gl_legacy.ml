@@ -161,12 +161,13 @@ let stencil_buffer_bit = uu_of_int 0x00000400
 let depth_test  = uu_of_int 0x0B71
 
 let lightfv = foreign3 "glLightfv" enum enum (ptr C.float)
+    (* TODO cf cube_lit.ml *)
 
 let materialfv = foreign3 "glMaterialfv" enum enum (ptr C.float)
 
 (* enums *)
 let lighting      = uu_of_int 0x0B50
-let light0        = uu_of_int 0x4000
+let light0        = uu_of_int 0x4000 (* TODO cf https://registry.khronos.org/OpenGL-Refpages/gl2.1/xhtml/glLight.xml *)
 let diffuse       = uu_of_int 0x1201
 let specular      = uu_of_int 0x1202
 let position      = uu_of_int 0x1203
