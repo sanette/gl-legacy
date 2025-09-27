@@ -344,21 +344,54 @@ end
 
 (* Display lists *)
 
+type diplay_list_mode =  COMPILE | COMPILE_AND_EXECUTE
+
+(* Constants for new_list modes *)
+let compile             = uu_of_int 0x1300
+let compile_and_execute = uu_of_int 0x1301
+
+let list_mode_enum = function
+  | COMPILE -> compile
+  | COMPILE_AND_EXECUTE -> compile_and_execute
+
+(* https://registry.khronos.org/OpenGL-Refpages/gl2.1/xhtml/glGenLists.xml *)
 let gen_lists = foreign "glGenLists" (C.int @-> returning enum)
 
 let delete_lists = foreign2 "glDeleteLists" enum C.int
 
+(* https://registry.khronos.org/OpenGL-Refpages/gl2.1/xhtml/glNewList.xml *)
 let new_list = foreign2 "glNewList" enum enum
+
+let new_list list mode =
+  new_list list (list_mode_enum mode)
 
 let end_list = foreign0 "glEndList"
 
 let call_list = foreign1 "glCallList" enum
 
+(* https://registry.khronos.org/OpenGL-Refpages/gl2.1/xhtml/glCallLists.xml *)
 let call_lists = foreign3 "glCallLists" C.int enum (ptr void)
 
-(* Constants for new_list modes *)
-let compile             = uu_of_int 0x1300
-let compile_and_execute = uu_of_int 0x1301
+module List_type = struct
+(* Enums for glCallLists "type" argument *)
+let byte           = uu_of_int 0x1400
+let unsigned_byte  = uu_of_int 0x1401
+let short          = uu_of_int 0x1402
+let unsigned_short = uu_of_int 0x1403
+let int            = uu_of_int 0x1404
+let unsigned_int   = uu_of_int 0x1405
+let float          = uu_of_int 0x1406
+let two_bytes      = uu_of_int 0x1407
+let three_bytes    = uu_of_int 0x1408
+let four_bytes     = uu_of_int 0x1409
+end
+
+(* For now we only use uint *)
+let call_lists (arr : Unsigned.uint array) =
+  let n = Array.length arr in
+  let carr = Ctypes.CArray.of_list uint (Array.to_list arr) in
+  let ptr = Ctypes.CArray.start carr |> Ctypes.to_voidp in
+  call_lists n List_type.unsigned_int ptr
 
 (*
    emacs: convert camel-case to snake_case:

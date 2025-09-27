@@ -78,7 +78,7 @@ let () =
   (* Build display list for cube *)
   let cube_list =
     let id = Gl.gen_lists 1 in
-    Gl.new_list id Gl.compile;
+    Gl.new_list id Gl.COMPILE;
     draw_cube ();
     Gl.end_list ();
     id
