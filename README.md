@@ -22,6 +22,7 @@ mv bin/dune.moveme bin/dune
 dune exec bin/triangle.exe
 dune exec bin/cube.exe
 dune exec bin/cube_lit.exe
+dune exec bin/cube_list.exe
 ```
 
 ![triangle](triangle.png)
@@ -62,4 +63,4 @@ allows me to run old code I wrote in the the good old times.
 
 True. Good question. One answer is that I wanted a minimal set of
 bindings that would go with `tgls` (See the `image_quad` example). Of
-course, another answer is that I wanted to give it a try myself...
+course, another answer is that it's fun to give it a try oneself...
