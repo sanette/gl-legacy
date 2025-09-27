@@ -8,9 +8,7 @@ __Work in Progress__
 
 ## Examples
 
-Right now the triangle ad cube demos work ;)
-
-To run the demo:
+To run the demos:
 
 * Make sure `tsdl` is installed, or run
 ```bash
@@ -62,6 +60,6 @@ allows me to run old code I wrote in the the good old times.
 
 * But there's already `lablgl` and `glMLite`!
 
-True. Good question. One (bad) answer is that I wanted a minimal set
-of bindings that would go with `tgls`. See the `image_quad`
-example. Of course, another answer is that I wanted to give it a try myself...
+True. Good question. One answer is that I wanted a minimal set of
+bindings that would go with `tgls` (See the `image_quad` example). Of
+course, another answer is that I wanted to give it a try myself...
