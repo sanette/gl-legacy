@@ -1,3 +1,10 @@
+# 0.0.4
+
+## Added
+
+* texture bindings
+* image_quad demo
+
 # 0.0.3
 
 ## Added

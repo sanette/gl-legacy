@@ -30,6 +30,12 @@ dune exec bin/cube_lit.exe
 
 ![cube](cube.png)
 
+This one requires in addition `tsdl-image` and `tgls`:
+
+```bash
+cd bin; dune exec ./image_quad.exe
+```
+
 ## Code sample
 
 ```ocaml
@@ -46,3 +52,16 @@ dune exec bin/cube_lit.exe
 
 (...)
 ```
+
+## But why?
+
+* Why old openGL?
+
+Because it's a lot easier to program, has some pedagogical value, and
+allows me to run old code I wrote in the the good old times.
+
+* But there's already `lablgl` and `glMLite`!
+
+True. Good question. One (bad) answer is that I wanted a minimal set
+of bindings that would go with `tgls`. See the `image_quad`
+example. Of course, another answer is that I wanted to give it a try myself...

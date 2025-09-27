@@ -3,7 +3,6 @@
  (modules triangle)
  (libraries tsdl gl_legacy))
 
-
 (executable
  (name cube)
  (modules cube)
@@ -13,3 +12,8 @@
  (name cube_lit)
  (modules cube_lit)
  (libraries tsdl gl_legacy))
+
+(executable
+ (name image_quad)
+ (modules image_quad)
+ (libraries tsdl tsdl-image tgls.tgl3 gl_legacy))

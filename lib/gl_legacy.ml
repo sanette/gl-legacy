@@ -148,12 +148,14 @@ let mult_matrixd (m : (float, float64_elt, c_layout) Array1.t) : unit =
 (* ---------------------------------------------------------------------- *)
 (* Clear *)
 
+(* This one already exists in tgl3 *)
 let clear_color =
   foreign4 "glClearColor" C.float C.float C.float C.float
 
+(* This one already exists in tgl3 *)
 let clear = foreign1 "glClear" enum
 
-(* Clear buffer bits *)
+(* Clear buffer bits (also in tgl3) *)
 let color_buffer_bit   = uu_of_int 0x00004000
 let depth_buffer_bit   = uu_of_int 0x00000100
 let stencil_buffer_bit = uu_of_int 0x00000400
@@ -207,6 +209,11 @@ let render_mode_enum = function
   | RENDER -> render
   | SELECT -> select
   | FEEDBACK -> feedback
+
+
+(* Images *)
+
+let texture_2d = Unsigned.UInt.of_int 0x0DE1
 
 module Feedback = struct
   (* Constants for feedback buffer types *)
