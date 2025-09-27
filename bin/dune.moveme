@@ -14,6 +14,11 @@
  (libraries tsdl gl_legacy))
 
 (executable
+ (name cube_list)
+ (modules cube_list)
+ (libraries tsdl gl_legacy))
+
+(executable
  (name image_quad)
  (modules image_quad)
  (libraries tsdl tsdl-image tgls.tgl3 gl_legacy))

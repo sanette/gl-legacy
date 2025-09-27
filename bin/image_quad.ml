@@ -2,7 +2,6 @@
 
 open Tsdl
 open Tsdl_image
-open Result
 module Gl = Gl_legacy
 module Gl3 = Tgl3.Gl
 

@@ -1,3 +1,10 @@
+# 0.0.5
+
+## Added
+
+* display list
+* cube_list demo
+
 # 0.0.4
 
 ## Added

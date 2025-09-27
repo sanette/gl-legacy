@@ -342,6 +342,24 @@ Query replace regexpm
 
 end
 
+(* Display lists *)
+
+let gen_lists = foreign "glGenLists" (C.int @-> returning enum)
+
+let delete_lists = foreign2 "glDeleteLists" enum C.int
+
+let new_list = foreign2 "glNewList" enum enum
+
+let end_list = foreign0 "glEndList"
+
+let call_list = foreign1 "glCallList" enum
+
+let call_lists = foreign3 "glCallLists" C.int enum (ptr void)
+
+(* Constants for new_list modes *)
+let compile             = uu_of_int 0x1300
+let compile_and_execute = uu_of_int 0x1301
+
 (*
    emacs: convert camel-case to snake_case:
 Query replace regexp:
