@@ -1,5 +1,4 @@
 open Tsdl
-open Bigarray
 module Gl = Gl_legacy
 
 let () =
@@ -19,12 +18,10 @@ let () =
     Gl.enable Gl.depth_test;
     Gl.enable Gl.lighting;
     Gl.enable Gl.light0;
-    Gl.enable Gl.color_material;
+    Gl.enable Gl.color_material_enum;
 
     (* Light properties *)
-    let arr kind values =
-      let ba = Array1.of_array float32 c_layout values in
-      Gl.lightfv Gl.light0 kind (Ctypes.bigarray_start Ctypes.array1 ba)
+    let arr kind values = Gl.lightfv Gl.light0 kind values
     in
     arr Gl.position [| 0.0; 0.0; 2.0; 1.0 |];
     arr Gl.diffuse  [| 1.0; 1.0; 1.0; 1.0 |];
