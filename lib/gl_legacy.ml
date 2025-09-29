@@ -13,7 +13,13 @@ open Ctypes
 open Foreign
 open Bigarray
 
+type enum = Unsigned.uint
+type matrixf =  (float, Bigarray.float32_elt, Bigarray.c_layout) Bigarray.Array1.t
+type matrixd =  (float, Bigarray.float64_elt, Bigarray.c_layout) Bigarray.Array1.t
+
 let uu_of_int = Unsigned.UInt.of_int
+let enum_to_int = Unsigned.UInt.to_int
+let int_to_enum = uu_of_int
 
 (* ---------------------------------------------------------------------- *)
 (* Dynamically open the OpenGL shared library *)
