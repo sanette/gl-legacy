@@ -6,6 +6,10 @@ Use this together with `tgls` for a complete coverage of (more) modern OpenGL.
 
 __Work in Progress__
 
+## API Documentation
+
+https://sanette.github.io/gl-legacy/
+
 ## Examples
 
 To run the demos:
