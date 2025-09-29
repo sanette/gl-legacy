@@ -11,5 +11,7 @@ done
 
 sed -i "s| (gl-legacy.Gl_legacy)||g" docs/index.html
 cp -r ./_build/default/_doc/_html/odoc.support docs/
+chmod 644 docs/odoc.support/odoc.css
+sed -i "s|max-width: 132ex;|max-width: 180ex;|g" docs/odoc.support/odoc.css
 
 echo "Done"

@@ -1281,7 +1281,7 @@ body.odoc:has( .odoc-search) .odoc-toc {
 
 @media only screen and (max-width: 210ex) {
   body.odoc {
-    max-width: 132ex;
+    max-width: 180ex;
     grid-template-areas:
       "search-bar nav"
       "sidebar    preamble"

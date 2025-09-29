@@ -40,7 +40,7 @@ type display_list_mode = COMPILE | COMPILE_AND_EXECUTE
     For documentation, see
     {{:https://registry.khronos.org/OpenGL-Refpages/gl2.1/}here}.
 
-    In particular, that doc tells you the meanings of the arguments, and which
+    In particular, that doc tells you the meaning of the arguments, and which
     {!enums} ([enums]) are valid parameters for each function.
 
     {e If you don't find a function below, it is maybe because it still exists
