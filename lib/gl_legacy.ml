@@ -107,7 +107,7 @@ let pop_matrix    = foreign0 "glPopMatrix"
 
 let translatef = foreign3 "glTranslatef" C.float C.float C.float
 let rotatef = foreign4 "glRotatef" C.float C.float C.float C.float
-let rotated = foreign4 "glRotatef" C.double C.double C.double C.double
+let rotated = foreign4 "glRotated" C.double C.double C.double C.double
 (* angle x y z *)
 
 let scalef = foreign3 "glScalef" C.float C.float C.float
