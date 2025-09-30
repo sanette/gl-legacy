@@ -49,7 +49,7 @@ let () =
       in
       poll ();
 
-      Gl.clear (Unsigned.UInt.logor Gl.color_buffer_bit Gl.depth_buffer_bit);
+      Gl.clear Gl.(color_buffer_bit lor depth_buffer_bit);
 
       Gl.load_identity ();
       Gl.translatef 0.0 0.0 (-5.0);

@@ -97,7 +97,7 @@ let () =
     done;
 
     (* Clear screen *)
-    Gl.clear (Enum.logor Gl.color_buffer_bit Gl.depth_buffer_bit);
+    Gl.clear Gl.(color_buffer_bit lor depth_buffer_bit);
 
     (* Modelview transform *)
     Gl.matrix_mode Gl.modelview;

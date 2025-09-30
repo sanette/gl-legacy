@@ -33,7 +33,7 @@ type matrixd =  (float, Bigarray.float64_elt, Bigarray.c_layout) Bigarray.Array1
 type render_mode = RENDER | SELECT | FEEDBACK
 type display_list = enum
 type display_list_mode = COMPILE | COMPILE_AND_EXECUTE
-
+val ( lor ) : enum -> enum -> enum
 
 (** {2 OpenGL functions}
 

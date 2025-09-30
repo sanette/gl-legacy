@@ -20,6 +20,7 @@ type matrixd =  (float, Bigarray.float64_elt, Bigarray.c_layout) Bigarray.Array1
 let uu_of_int = Unsigned.UInt.of_int
 let enum_to_int = Unsigned.UInt.to_int
 let int_to_enum = uu_of_int
+let ( lor ) = Unsigned.UInt.logor
 
 (* ---------------------------------------------------------------------- *)
 (* Dynamically open the OpenGL shared library *)

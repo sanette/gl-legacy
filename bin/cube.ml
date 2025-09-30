@@ -46,7 +46,7 @@ let () =
       poll ();
 
       (* Clear buffers *)
-      Gl.clear (Unsigned.UInt.logor Gl.color_buffer_bit Gl.depth_buffer_bit);
+      Gl.clear Gl.(color_buffer_bit lor depth_buffer_bit);
 
 
       (* Reset modelview *)
