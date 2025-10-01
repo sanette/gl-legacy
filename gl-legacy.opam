@@ -8,8 +8,8 @@ maintainer: ["Vu Ngoc San <san.vu-ngoc@laposte.net>"]
 authors: ["Vu Ngoc San <san.vu-ngoc@laposte.net>"]
 license: "ISC"
 tags: ["plot" "2D" "3D" "graphics" "openGL"]
-homepage: "https://github.com/sanette/gl_legacy"
-bug-reports: "https://github.com/sanette/gl_legacy/issues"
+homepage: "https://github.com/sanette/gl-legacy"
+bug-reports: "https://github.com/sanette/gl-legacy/issues"
 depends: [
   "dune" {>= "3.12"}
   "ocaml" {>= "4.14"}
@@ -32,4 +32,4 @@ build: [
     "@doc" {with-doc}
   ]
 ]
-dev-repo: "git+https://github.com/sanette/gl_legacy.git"
+dev-repo: "git+https://github.com/sanette/gl-legacy.git"

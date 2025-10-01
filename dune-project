@@ -5,7 +5,7 @@
 (license ISC)
 (maintainers "Vu Ngoc San <san.vu-ngoc@laposte.net>")
 (authors "Vu Ngoc San <san.vu-ngoc@laposte.net>")
-(source (github sanette/gl_legacy))
+(source (github sanette/gl-legacy))
 
 (package
  (name gl-legacy)
