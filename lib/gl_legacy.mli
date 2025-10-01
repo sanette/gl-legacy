@@ -1,12 +1,16 @@
 (* Gc-legacy --- San Vu Ngoc 2025 *)
 
 (** [The gl-legacy] library is a minimal set of OCaml bindings to the venerable
-    OpenGL 2.1 immediate mode. It can be used by itself (see the [triangle] or
-    [cube] example), but more reasonably it should be thought of as an add-on to
-    the more modern {{:https://erratique.ch/software/tgls/doc/index.html}tgls}
-    bindings.
+    {{:https://registry.khronos.org/OpenGL-Refpages/gl2.1/}openGL 2.1} immediate
+    mode. In particular, it includes {e Display Lists}, and the interesting {e
+    Feedback mode}.
 
-    When mixing this library with [tgls], it is convenient to use the following aliases:
+    [gl-legacy] can be used by itself (see the [triangle] or [cube] example),
+    but more reasonably it should be thought of as an add-on to the more modern
+    {{:https://erratique.ch/software/tgls/doc/index.html}tgls} bindings.
+
+    When mixing this library with [tgls], it is convenient to use the following
+    aliases: (for instance if you target OpenGL 3.x)
 
     {[
       module Gl = Gl_legacy
@@ -28,6 +32,8 @@ type enum
 val enum_to_int : enum -> int
 val int_to_enum : int -> enum
 
+(** 4x4 Matrices are flattened to 1D arrays of size 16. (column major: the first
+    4 elements are the first column, etc.) *)
 type matrixf =  (float, Bigarray.float32_elt, Bigarray.c_layout) Bigarray.Array1.t
 type matrixd =  (float, Bigarray.float64_elt, Bigarray.c_layout) Bigarray.Array1.t
 type render_mode = RENDER | SELECT | FEEDBACK
@@ -46,12 +52,13 @@ val ( lor ) : enum -> enum -> enum
     {e If you don't find a function below, it is maybe because it still exists
     in OpenGL 3, and hence can be found from
     {{:https://erratique.ch/software/tgls/doc/index.html}tgls}.}
-
-    For instance if you want to use OpenGL 3.0 you should consult:
+    For instance if you want to use OpenGL 3.x you should consult:
 
     - {{:https://erratique.ch/software/tgls/doc/Tgl3/Gl/index.html}[tsdl.tgl3]}
     (OpenGL 3.x bindings)
-    - {{:https://registry.khronos.org/OpenGL-Refpages/gl4/}OpenGL 4.5 doc}.
+    - {{:https://www.khronos.org/files/opengl-quick-reference-card.pdf}OpenGL
+    3.2 reference card}
+    - (more complete) {{:https://registry.khronos.org/OpenGL-Refpages/gl4/}OpenGL 4.5 doc}.
 
 *)
 

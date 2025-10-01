@@ -1,9 +1,11 @@
 (* Gl_legacy
 
-   Quick library for using legacy OpenGL immediate-mode and matrix stack
-   bindings. Works alongside tgls for retro OpenGL 1.x style code.
+   Quick ocaml library for using legacy OpenGL immediate-mode, matrix stack,
+   display lists and feedback mode. Works alongside tgls for retro OpenGL 1.x
+   style code.
 
-   Work in progress
+   Work in progress. However, the current version is sufficient for runnning
+   oplot, so without other incentive, it may stay as it is.
 
    San Vu Ngoc 2025
 *)
@@ -152,7 +154,7 @@ let load_matrixf (m : (float, float32_elt, c_layout) Array1.t) : unit =
   load_matrixf p
 
 (* https://registry.khronos.org/OpenGL-Refpages/gl2.1/xhtml/glMultMatrix.xml
-   Row major *)
+   Column major *)
 let mult_matrixf (m : (float, float32_elt, c_layout) Array1.t) : unit =
   check_len16 "mult_matrixf" (Array1.dim m);
   let p = C.bigarray_start C.array1 m in
