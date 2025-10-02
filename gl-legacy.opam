@@ -11,7 +11,7 @@ tags: ["plot" "2D" "3D" "graphics" "openGL"]
 homepage: "https://github.com/sanette/gl-legacy"
 bug-reports: "https://github.com/sanette/gl-legacy/issues"
 depends: [
-  "dune" {>= "3.12"}
+  "dune" {>= "3.15"}
   "ocaml" {>= "4.14"}
   "ctypes"
   "ctypes-foreign" {>= "0.21.1"}

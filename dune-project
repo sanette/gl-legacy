@@ -1,4 +1,4 @@
-(lang dune 3.12)
+(lang dune 3.15)
 (name gl-legacy)
 (version "0.1.0")
 (generate_opam_files true)
