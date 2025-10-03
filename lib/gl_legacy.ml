@@ -24,6 +24,28 @@ let enum_to_int = Unsigned.UInt.to_int
 let int_to_enum = uu_of_int
 let ( lor ) = Unsigned.UInt.logor
 
+let ba_as_float32p =
+  view ~read:(fun _ -> assert false)
+    ~write:(fun b -> to_voidp (bigarray_start array1 b))
+    (ptr void)
+
+let ba_as_float64p =
+  view ~read:(fun _ -> assert false)
+    ~write:(fun b -> to_voidp (bigarray_start array1 b))
+    (ptr void)
+
+let _ba_as_uint8p =
+  view ~read:(fun _ -> assert false)
+    ~write:(fun b -> to_voidp (bigarray_start array1 b))
+    (ptr void)
+
+let enums_as_voidp =
+  view ~read:(fun _ -> assert false)
+    ~write:(fun a ->
+        let carr = CArray.of_list uint (Array.to_list a) in
+        to_voidp (CArray.start carr))
+    (ptr void)
+
 (* ---------------------------------------------------------------------- *)
 (* Dynamically open the OpenGL shared library *)
 
@@ -95,7 +117,6 @@ let color4f = foreign4 "glColor4f" C.float C.float C.float C.float
 let tex_coord2f = foreign2 "glTexCoord2f" C.float C.float
 let tex_coord2d = foreign2 "glTexCoord2d" C.double C.double
 
-
 (* normals *)
 let normal3f = foreign3 "glNormal3f" C.float C.float C.float
 
@@ -113,10 +134,6 @@ let rotated = foreign4 "glRotated" C.double C.double C.double C.double
 (* angle x y z *)
 
 let scalef = foreign3 "glScalef" C.float C.float C.float
-
-(* let mult_matrixf mat = *)
-(*   let ptr = C.bigarray_start C.array2 mat in *)
-(*   mult_matrixf ptr *)
 
 let ortho =
   foreign6 "glOrtho"
@@ -137,10 +154,11 @@ let flush  = foreign0 "glFlush"
 let finish = foreign0 "glFinish"
 
 (* matrix load/mult *)
-let load_matrixf = foreign1 "glLoadMatrixf" (ptr C.float)
-let mult_matrixf = foreign1 "glMultMatrixf" (ptr C.float)
-let load_matrixd = foreign1 "glLoadMatrixd" (ptr C.double)
-let mult_matrixd = foreign1 "glMultMatrixd" (ptr C.double)
+
+let load_matrixf = foreign1 "glLoadMatrixf" ba_as_float32p
+let mult_matrixf = foreign1 "glMultMatrixf" ba_as_float32p
+let load_matrixd = foreign1 "glLoadMatrixd" ba_as_float64p
+let mult_matrixd = foreign1 "glMultMatrixd" ba_as_float64p
 
 (* ---------------------------------------------------------------------- *)
 (* Convenience wrappers for Bigarray matrices *)
@@ -150,25 +168,21 @@ let check_len16 name len =
 
 let load_matrixf (m : (float, float32_elt, c_layout) Array1.t) : unit =
   check_len16 "load_matrixf" (Array1.dim m);
-  let p = C.bigarray_start C.array1 m in
-  load_matrixf p
+  load_matrixf m
 
 (* https://registry.khronos.org/OpenGL-Refpages/gl2.1/xhtml/glMultMatrix.xml
    Column major *)
 let mult_matrixf (m : (float, float32_elt, c_layout) Array1.t) : unit =
   check_len16 "mult_matrixf" (Array1.dim m);
-  let p = C.bigarray_start C.array1 m in
-  mult_matrixf p
+  mult_matrixf m
 
 let load_matrixd (m : (float, float64_elt, c_layout) Array1.t) : unit =
   check_len16 "load_matrixd" (Array1.dim m);
-  let p = C.bigarray_start C.array1 m in
-  load_matrixd p
+  load_matrixd m
 
 let mult_matrixd (m : (float, float64_elt, c_layout) Array1.t) : unit =
   check_len16 "mult_matrixd" (Array1.dim m);
-  let p = C.bigarray_start C.array1 m in
-  mult_matrixd p
+  mult_matrixd m
 
 
 (* ---------------------------------------------------------------------- *)
@@ -193,17 +207,17 @@ let lightfv light_id kind values =
 
 let light_modelf = foreign2 "glLightModelf" enum C.float
 
-let light_modelfv = foreign2 "glLightModelfv" enum (ptr C.float)
+let light_modelfv = foreign2 "glLightModelfv" enum ba_as_float32p
 let light_modelfv enum values =
   let ba = Array1.of_array float32 c_layout values in
-  light_modelfv enum (Ctypes.bigarray_start Ctypes.array1 ba)
+  light_modelfv enum ba
 
 let materialf = foreign3 "glMaterialf" enum enum C.float
 
-let materialfv = foreign3 "glMaterialfv" enum enum (ptr C.float)
+let materialfv = foreign3 "glMaterialfv" enum enum ba_as_float32p
 let materialfv face name values =
   let ba = Array1.of_array float32 c_layout values in
-  materialfv face name (Ctypes.bigarray_start Ctypes.array1 ba)
+  materialfv face name ba
 
 let color_material = foreign2 "glColorMaterial" enum enum
 
@@ -278,8 +292,8 @@ let copy_pixels = foreign5 "glCopyPixels" C.int C.int C.int C.int enum
 
 let tex_envf = foreign3 "glTexEnvf" enum enum float
 let tex_envi = foreign3 "glTexEnvi" enum enum enum
-let tex_envfv = foreign3 "glTexEnvfv" enum enum (ptr float)
-let tex_enviv = foreign3 "glTexEnviv" enum enum (ptr C.int)
+let tex_envfv = foreign3 "glTexEnvfv" enum enum (ptr C.float) (* TODO *)
+let tex_enviv = foreign3 "glTexEnviv" enum enum (ptr C.int) (* TODO *)
 
 let color    = uu_of_int 0x1800
 let depth    = uu_of_int 0x1801
@@ -404,7 +418,7 @@ Query replace regexpm
 
   (* void glFeedbackBuffer(GLsizei size, GLenum type, GLfloat *buffer) *)
   let feedback_buffer =
-    foreign "glFeedbackBuffer" (C.int @-> enum @-> ptr C.float @-> returning C.void)
+    foreign3 "glFeedbackBuffer" C.int enum ba_as_float32p
 
   (* void glPassThrough(GLfloat token)
      https://registry.khronos.org/OpenGL-Refpages/gl2.1/xhtml/glPassThrough.xml*)
@@ -415,15 +429,11 @@ Query replace regexpm
   let make_feedback_buffer n : (float, float32_elt, c_layout) Array1.t =
     Array1.create float32 c_layout n
 
-  let feedback_buffer_ptr (ba : (float, float32_elt, c_layout) Array1.t) =
-    C.bigarray_start C.array1 ba
-
   (* Return a feedback buffer. To be used *before* render_mode is called*)
   let setup n mode =
     let mode = buffer_type_enum mode in
     let ba = make_feedback_buffer n in
-    let ptr = feedback_buffer_ptr ba in
-    feedback_buffer n mode ptr;
+    feedback_buffer n mode ba;
     ba
 
 end
@@ -458,7 +468,7 @@ let end_list = foreign0 "glEndList"
 let call_list = foreign1 "glCallList" enum
 
 (* https://registry.khronos.org/OpenGL-Refpages/gl2.1/xhtml/glCallLists.xml *)
-let call_lists = foreign3 "glCallLists" C.int enum (ptr void)
+let call_lists = foreign3 "glCallLists" C.int enum enums_as_voidp
 
 module List_type = struct
 (* Enums for glCallLists "type" argument *)
@@ -477,9 +487,7 @@ end
 (* For now we only use uint *)
 let call_lists (arr : Unsigned.uint array) =
   let n = Array.length arr in
-  let carr = Ctypes.CArray.of_list uint (Array.to_list arr) in
-  let ptr = Ctypes.CArray.start carr |> Ctypes.to_voidp in
-  call_lists n List_type.unsigned_int ptr
+  call_lists n List_type.unsigned_int arr
 
 (*
    emacs: convert camel-case to snake_case:
