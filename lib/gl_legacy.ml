@@ -50,23 +50,22 @@ let enums_as_voidp =
 (* Dynamically open the OpenGL shared library *)
 
 let lib_gl =
-  if Sys.os_type = "Win32" then
-    Dl.dlopen ~flags:[Dl.RTLD_NOW; Dl.RTLD_GLOBAL] ~filename:"opengl32.dll"
-    |> Option.some
-  else if Sys.os_type = "Unix" then
-    (* Linux / BSD usually have libGL.so.1 *)
-    try
-      Dl.dlopen ~flags:[Dl.RTLD_NOW; Dl.RTLD_GLOBAL] ~filename:"libGL.so.1"
-    |> Option.some
-    with (* maybe macOS *)
-      _ ->
-      Dl.dlopen ~flags:[Dl.RTLD_NOW; Dl.RTLD_GLOBAL]
-        ~filename:"/System/Library/Frameworks/OpenGL.framework/OpenGL"
-      |> Option.some
-  else begin
-    print_endline "Could not find OpenGL library file.";
+  let trylib filename =
+    Some (Dl.dlopen ~flags:[Dl.RTLD_NOW; Dl.RTLD_GLOBAL] ~filename) in
+  match Sys.os_type with
+  | "Win32" | "Cygwin" ->
+    trylib "opengl32.dll"
+  | "Unix" -> begin
+      try trylib "libGL.so.1"
+      with _ ->  (* maybe macOS *)
+      try trylib "/System/Library/Frameworks/OpenGL.framework/OpenGL"
+      with _ ->
+        print_endline "Could not find OpenGL library file.";
+        None
+    end
+  | _ -> print_endline "Unsupported OS type.";
     None
-  end
+
 (* ---------------------------------------------------------------------- *)
 (* Helpers to reduce boilerplate *)
 
