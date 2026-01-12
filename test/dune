@@ -1,7 +1,9 @@
 (test
  (name test)
  (libraries
-   gl_legacy
-  (select test.ml from
+  gl_legacy
+  (select
+   test.ml
+   from
    (tsdl -> test.visual.ml)
    (-> test.blind.ml))))
