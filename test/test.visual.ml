@@ -1,7 +1,7 @@
 module Gl = Gl_legacy
 open Tsdl
 
-let () =
+let main () =
 
   (* Initialize SDL with video *)
   let () = match Sdl.init Sdl.Init.video with
@@ -68,3 +68,8 @@ let () =
   Sdl.destroy_window win;
   Sdl.quit ();
   print_endline "Tests OK"
+
+let () =
+  if Sys.getenv_opt "OCAMLCI" = Some "true"
+  then print_endline "OpenGL Test cannot be run in CI mode without video display."
+  else main ()
