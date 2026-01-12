@@ -1,0 +1,5 @@
+version=0.28.1
+profile=conventional
+break-infix=fit-or-vertical
+parse-docstrings=true
+exp-grouping=preserve

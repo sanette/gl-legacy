@@ -3,9 +3,11 @@ module Gl = Gl_legacy
 
 let () =
   (* Initialize SDL with video *)
-  let () = match Sdl.init Sdl.Init.video with
-  | Ok () -> ()
-  | Error (`Msg e) -> failwith ("SDL_Init Error: " ^ e) in
+  let () =
+    match Sdl.init Sdl.Init.video with
+    | Ok () -> ()
+    | Error (`Msg e) -> failwith ("SDL_Init Error: " ^ e)
+  in
 
   (* Set OpenGL attributes *)
   ignore (Sdl.gl_set_attribute Sdl.Gl.context_major_version 2);

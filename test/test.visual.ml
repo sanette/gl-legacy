@@ -2,11 +2,12 @@ module Gl = Gl_legacy
 open Tsdl
 
 let main () =
-
   (* Initialize SDL with video *)
-  let () = match Sdl.init Sdl.Init.video with
+  let () =
+    match Sdl.init Sdl.Init.video with
     | Ok () -> ()
-    | Error (`Msg e) -> failwith ("SDL_Init Error: " ^ e) in
+    | Error (`Msg e) -> failwith ("SDL_Init Error: " ^ e)
+  in
 
   (* Create window with OpenGL context *)
   let win =
@@ -26,13 +27,13 @@ let main () =
   let running = ref true in
   let event = Sdl.Event.create () in
   while !running do
-
     let rec pump () =
       if Sdl.poll_event (Some event) then begin
         match Sdl.Event.(get event typ) with
         | t when t = Sdl.Event.quit -> running := false
-        | _ -> ();
-          pump ()
+        | _ ->
+            ();
+            pump ()
       end
     in
     pump ();
@@ -61,8 +62,7 @@ let main () =
     Gl.vertex2f 0.8 (-0.8);
     Gl.gl_end ();
 
-    Sdl.gl_swap_window win;
-
+    Sdl.gl_swap_window win
   done;
 
   Sdl.destroy_window win;
@@ -70,6 +70,6 @@ let main () =
   print_endline "Tests OK"
 
 let () =
-  if Sys.getenv_opt "OCAMLCI" = Some "true"
-  then print_endline "OpenGL Test cannot be run in CI mode without video display."
+  if Sys.getenv_opt "OCAMLCI" = Some "true" then
+    print_endline "OpenGL Test cannot be run in CI mode without video display."
   else main ()
