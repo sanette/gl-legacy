@@ -19,6 +19,10 @@ To run the demos:
 opam install tsdl
 ```
 
+Note: on **Windows** you might need to do instead:
+
+	opam pin https://github.com/sanette/tsdl.git
+
 * Then
 
 ```bash
