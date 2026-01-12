@@ -37,7 +37,7 @@ jobs:
 
       - run: opam exec -- dune build
 
-      - run: BLIND_CI=true opam exec -- dune runtest
+      - run: opam exec -- dune runtest
 
       - run: opam install .
 
